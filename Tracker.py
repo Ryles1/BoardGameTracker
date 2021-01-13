@@ -37,6 +37,7 @@ def main():
     while True:
         user_choice = menu()
         if user_choice == 5:
+            print('Bye!')
             exit()
         elif user_choice == 1:
             utilities.list_players()
