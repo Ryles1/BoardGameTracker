@@ -1,4 +1,5 @@
 import sqlite3
+import re
 
 
 def connection():
@@ -60,18 +61,33 @@ def add_new_player():
             print(e)
 
 
+def validate_date(date):
+    r = re.match(r'\d{4}-(0[1-9]|[1][12])-([0-2][0-9]|[3][0-1])', date)
+    if r:
+        return True
+    else:
+        return False
+
+
+def validate_game(game):
+    if not game.isalnum():
+        return False
+    elif not len(game) < 100:
+        return False
+    else:
+        return True
+
+
 def add_new_game():
     conn, c = connection()
     while True:
-        first_name = input('Enter player first name: ').strip()
-        last_name = input('Enter player last name: ').strip()
-        if len(first_name.split()) > 1 or len(last_name.split()) > 1:
-            print('Please enter names one at a time.\n')
-            continue
-        elif not all([first_name, last_name, first_name.isalpha(), last_name.isalpha()]):
-            print('Please enter names as alphabetical characters only.\n')
-            continue
-        else:
+        game_played = input('Enter game: ').strip().title()
+        # split and re-join game by words in case there are extra spaces
+        game_played = ' '.join(game_played.split())
+        date_played = input('Enter date of game (format YYYY-MM-DD): ').strip()
+        date_ok = validate_date(date_played)
+        game_ok = validate_game(game_played)
+        if date_ok and game_ok:
             break
     query = 'INSERT INTO games () VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
     c.execute(query)
