@@ -1,5 +1,6 @@
 import sqlite3
 
+
 def connection():
     conn = sqlite3.connect('BGT.s3db')
     c = conn.cursor()
@@ -14,11 +15,12 @@ def list_players():
     if players:
         print('List of players:')
         for row in players:
-            #print(row)
+            # print(row)
             print(row[1], row[2])
     else:
         print('Currently there are no players listed.')
     conn.close()
+
 
 def list_games():
     query = 'SELECT * FROM games'
@@ -33,12 +35,13 @@ def list_games():
         print('Currently there are no games listed.')
     conn.close()
 
+
 def add_new_player():
     conn, c = connection()
     while True:
         first_name = input('Enter player first name: ').strip()
         last_name = input('Enter player last name: ').strip()
-        if len(first_name.split()) > 1 or len(last_name.split()) >1:
+        if len(first_name.split()) > 1 or len(last_name.split()) > 1:
             print('Please enter names one at a time.\n')
             continue
         elif not all([first_name, last_name, first_name.isalpha(), last_name.isalpha()]):
@@ -58,5 +61,35 @@ def add_new_player():
 
 
 def add_new_game():
+    conn, c = connection()
+    while True:
+        first_name = input('Enter player first name: ').strip()
+        last_name = input('Enter player last name: ').strip()
+        if len(first_name.split()) > 1 or len(last_name.split()) > 1:
+            print('Please enter names one at a time.\n')
+            continue
+        elif not all([first_name, last_name, first_name.isalpha(), last_name.isalpha()]):
+            print('Please enter names as alphabetical characters only.\n')
+            continue
+        else:
+            break
+    query = 'INSERT INTO games () VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
+    c.execute(query)
     print('add_new_game')
 
+
+def delete_games():
+    conn, c = connection()
+    delete_id = int(input('Enter game id to delete '))
+    query = 'DELETE FROM games WHERE id = ?'
+    confirmation = input('Enter "Yes" to delete game.')
+    if confirmation != 'Yes':
+        print('Delete operation aborted')
+        return None
+    try:
+        c.execute(query, (delete_id,))
+        conn.commit()
+        conn.close()
+    except sqlite3.OperationalError:
+        with sqlite3.OperationalError as e:
+            print(e)

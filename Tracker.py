@@ -19,7 +19,7 @@ def menu():
     while True:
         try:
             user_choice = int(input())
-            if user_choice in list(range(1,6)):
+            if user_choice in list(range(1,7)):
                 return user_choice
             else:
                 print('Enter a number between 1 and 5.')
@@ -39,6 +39,8 @@ def main():
         if user_choice == 5:
             print('Bye!')
             exit()
+        elif user_choice == 6:
+            utilities.delete_games()
         elif user_choice == 1:
             utilities.list_players()
         elif user_choice == 2:
