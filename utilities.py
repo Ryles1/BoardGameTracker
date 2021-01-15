@@ -1,5 +1,5 @@
 import sqlite3
-import re
+from re import match
 
 
 def connection():
@@ -17,7 +17,7 @@ def list_players():
         print('List of players:')
         for row in players:
             # print(row)
-            print(row[1], row[2])
+            print(f'{row[0]}. {row[1]} {row[2]}')
     else:
         print('Currently there are no players listed.')
     conn.close()
@@ -62,7 +62,7 @@ def add_new_player():
 
 
 def validate_date(date):
-    r = re.match(r'\d{4}-(0[1-9]|[1][12])-([0-2][0-9]|[3][0-1])', date)
+    r = match(r'\d{4}-(0[1-9]|[1][12])-([0-2][0-9]|[3][0-1])', date)
     if r:
         return True
     else:
@@ -70,7 +70,8 @@ def validate_date(date):
 
 
 def validate_game(game):
-    if not game.isalnum():
+    test_name = ''.join(game.split())
+    if not test_name.isalnum():
         return False
     elif not len(game) < 100:
         return False
@@ -80,6 +81,7 @@ def validate_game(game):
 
 def add_new_game():
     conn, c = connection()
+    # while loop for getting name of game and date played
     while True:
         game_played = input('Enter game: ').strip().title()
         # split and re-join game by words in case there are extra spaces
@@ -87,11 +89,50 @@ def add_new_game():
         date_played = input('Enter date of game (format YYYY-MM-DD): ').strip()
         date_ok = validate_date(date_played)
         game_ok = validate_game(game_played)
-        if date_ok and game_ok:
-            break
-    query = 'INSERT INTO games () VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
-    c.execute(query)
-    print('add_new_game')
+        if date_ok:
+            if game_ok:
+                break
+            else:
+                print('There was an error with the game name, please try again:')
+                continue
+        else:
+            print('There was an error with the date, please try again (format YYYY-MM-DD):')
+            continue
+    # while loop for getting names of players
+    while True:
+        try:
+            num_players = int(input('Enter the number of players (2 - 6): '))
+        except ValueError:
+            print('Please enter an integer number of players between 2 and 6.')
+            continue
+        finally:
+            if not 2 <= num_players <= 6:
+                print('Please enter an integer number of players between 2 and 6.')
+                continue
+            else:
+                break
+    player_ids = []
+    # print list of players, get player ids, validate they are in database already
+    list_players()
+    c.execute('Select id from players;')
+    existing_players = [i[0] for i in c.fetchall()]
+    while len(player_ids) != num_players:
+        print('Please enter the id of the player.  If they are not listed, '
+              'please enter them into the database first (enter 100 to quit back to menu).')
+        try:
+            p = int(input())
+            if p == 100:
+                break
+        except ValueError:
+            print('Please enter only a single digit.')
+            continue
+        if p not in existing_players:
+            print('Please enter the player in the database before adding this game.')
+        else:
+            player_ids.append(p)
+    #query = 'INSERT INTO games () VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
+    #c.execute(query)
+    print(player_ids)
 
 
 def delete_games():
