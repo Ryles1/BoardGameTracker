@@ -124,10 +124,12 @@ def add_new_game():
             if p == 100:
                 break
         except ValueError:
-            print('Please enter only an integer for the id.')
+            print('Please enter only an integer for the id.\n')
             continue
         if p not in existing_players:
-            print('Please enter the player in the database before adding this game.')
+            print('Please enter the player in the database before adding this game.\n')
+        elif p in player_ids:
+            print('You have already entered that player.  Try again.\n')
         else:
             player_ids.append(p)
     # get the winner from user
@@ -135,18 +137,24 @@ def add_new_game():
     while True:
         try:
             winner = int(input('Please enter the id of the winner.  If they are not listed, '
-              'please enter them into the database first (enter 100 to quit back to menu)'))
+                                'please enter them into the database first (enter 100 to quit back to menu)'))
         except ValueError:
-            print('Please enter only an integer for the id.')
+            print('Please enter only an integer for the id.\n')
             continue
         if winner == 100:
             break
-        if winner not in existing_players:
-            print('Please enter the player in the database before adding this game.')
-    #query = 'INSERT INTO games () VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
-    #c.execute(query, values)
-    #conn.commit()
-    #conn.close()
+        elif winner not in existing_players:
+            print('Please enter the player in the database before adding this game.\n')
+            continue
+        elif winner not in player_ids:
+            print('The winner must have played the game! Try again.\n')
+            continue
+        else:
+            break
+    # query = 'INSERT INTO games () VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
+    # c.execute(query, values)
+    # conn.commit()
+    # conn.close()
     print(player_ids)
     print(f'Winner is {winner}')
 
