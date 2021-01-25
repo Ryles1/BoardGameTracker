@@ -166,8 +166,8 @@ def add_new_game():
               winner,
               )
     c.execute(query, values)
-    #conn.commit()
-    #conn.close()
+    conn.commit()
+    conn.close()
     print('Game successfully added!')
     #print(player_ids, values, query, sep='\n')
 
