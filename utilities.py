@@ -98,7 +98,7 @@ def add_new_game():
         else:
             print('There was an error with the date, please try again (format YYYY-MM-DD):')
             continue
-    # while loop for getting names of players
+
     while True:
         try:
             num_players = int(input('Enter the number of players (2 - 6): '))
@@ -116,6 +116,7 @@ def add_new_game():
     list_players()
     c.execute('Select id from players;')
     existing_players = [i[0] for i in c.fetchall()]
+    # while loop for getting names of players
     while len(player_ids) != num_players:
         print('Please enter the id of the player.  If they are not listed, '
               'please enter them into the database first (enter 100 to quit back to menu).')
@@ -151,12 +152,24 @@ def add_new_game():
             continue
         else:
             break
-    # query = 'INSERT INTO games () VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
-    # c.execute(query, values)
-    # conn.commit()
-    # conn.close()
-    print(player_ids)
-    print(f'Winner is {winner}')
+    query = f'INSERT INTO games (date_played, game_played, player1, player2, player3, player4, player5, player6, winner) VALUES (?,?,?,?,?,?,?,?,?)'
+    nulls = ['NULL' for i in range(6 - len(player_ids))]
+    player_ids = player_ids + nulls
+    values = (date_played,
+              game_played,
+              player_ids[0],
+              player_ids[1],
+              player_ids[2],
+              player_ids[3],
+              player_ids[4],
+              player_ids[5],
+              winner,
+              )
+    c.execute(query, values)
+    #conn.commit()
+    #conn.close()
+    print('Game successfully added!')
+    #print(player_ids, values, query, sep='\n')
 
 
 def delete_games():
