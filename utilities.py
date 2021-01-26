@@ -28,10 +28,25 @@ def list_games():
     conn, c = connection()
     c.execute(query)
     games = c.fetchall()
+    # TODO: improve readability of game listing
+    name_query = 'SELECT * from players'
+    c.execute(name_query)
+    names_dict = {player_row[0]: (' '.join(player_row[1:3])) for player_row in c.fetchall()}
     if games:
         print('List of games:')
+        print('''Date of Game    Game Played    Player     Player      Player      Player      Player      Player      Winner''')
         for row in games:
-            print(row)
+            game_data = [
+            row[1],
+            row[2],
+            names_dict.get(row[3],' - '),
+            names_dict.get(row[4],' - '),
+            names_dict.get(row[5],' - '),
+            names_dict.get(row[6],' - '),
+            names_dict.get(row[7],' - '),
+            names_dict.get(row[8],' - '),
+            names_dict.get(row[9],' - ')]
+            print('\t\t'.join(game_data))
     else:
         print('Currently there are no games listed.')
     conn.close()
@@ -138,12 +153,13 @@ def add_new_game():
     while True:
         try:
             winner = int(input('Please enter the id of the winner.  If they are not listed, '
-                                'please enter them into the database first (enter 100 to quit back to menu)'))
+                               'please enter them into the database first (enter 100 to quit back to menu)'))
         except ValueError:
             print('Please enter only an integer for the id.\n')
             continue
         if winner == 100:
-            break
+            conn.close()
+            return None
         elif winner not in existing_players:
             print('Please enter the player in the database before adding this game.\n')
             continue
@@ -152,8 +168,9 @@ def add_new_game():
             continue
         else:
             break
-    query = f'INSERT INTO games (date_played, game_played, player1, player2, player3, player4, player5, player6, winner) VALUES (?,?,?,?,?,?,?,?,?)'
-    nulls = ['NULL' for i in range(6 - len(player_ids))]
+    query = f'INSERT INTO games (date_played, game_played, player1, player2, player3, player4, player5, player6, ' \
+            f'winner) VALUES (?,?,?,?,?,?,?,?,?)'
+    nulls = ['NULL' for _ in range(6 - len(player_ids))]
     player_ids = player_ids + nulls
     values = (date_played,
               game_played,
@@ -169,7 +186,7 @@ def add_new_game():
     conn.commit()
     conn.close()
     print('Game successfully added!')
-    #print(player_ids, values, query, sep='\n')
+    # print(player_ids, values, query, sep='\n')
 
 
 def delete_games():
