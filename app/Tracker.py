@@ -2,10 +2,12 @@ import tables
 import utilities
 from sys import exit
 
-# 1. make a database with tables for players, games, and association table between the two
-# 2. need functions to add players, and add games with associated information
-# 3. need functino to display list of games, players
-#4. add a GUI?
+# 1. make a database with tables for players, games, and association table between the two COMPLETE
+# 2. need functions to add players, and add games with associated information COMPLETE
+# 3. need functino to display list of games, players COMPLETE
+# 3a. make some plots and statistics?
+# 3b. functions for updating player/game data?
+# 4. add a GUI?
 # 5. make a web app?
 def menu():
     print('''
