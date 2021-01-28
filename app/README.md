@@ -6,9 +6,13 @@ and visualization.
 
 Database: sqlite3
 -Practiced creating basic SQL queries
-- Had to learn syntax idiosyncracies for this DB (eg. setting up foreign keys).
+- Had to learn syntax idiosyncrasies for this DB (eg. setting up foreign keys).
 
 General: 
 - splitting program up into logical modules
 - input verification and exception catching
 - used regex to check date format (as practice for regex writing)
+
+Testing:
+- arranging directory to allow for testing
+- using unittest module to write tests for some functions

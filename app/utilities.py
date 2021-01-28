@@ -65,12 +65,13 @@ def add_new_player():
             continue
         else:
             break
-    query = 'INSERT INTO players (first_name, last_name) VALUES (?,?)'
+    name = ' '.join([first_name, last_name])
+    query = 'INSERT INTO players (name) VALUES (?)'
     try:
-        c.execute(query, (first_name, last_name))
+        c.execute(query, name)
         conn.commit()
         conn.close()
-        print(f'New player {first_name} {last_name} added successfully.')
+        print(f'New player {name} added successfully.')
     except sqlite3.OperationalError:
         with sqlite3.OperationalError as e:
             print(e)
