@@ -23,8 +23,10 @@ class TestCreatePlayers(unittest.TestCase):
 
 class TestValidateDate(unittest.TestCase):
     def test_validate_date(self):
+        #test values that should pass
         true_tests = ['2020-01-01', '1990-12-31']
         true_list = list(map(validate_date, true_tests))
+        #test values that should fail
         false_tests = ['89-01-01', '2020 01 01', '2020-13-01', '2020-12-32', '2020-1-01', '2020-01-1']
         false_list = list(map(validate_date, false_tests))
         self.assertNotIn(False, true_list)
