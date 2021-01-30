@@ -17,7 +17,7 @@ def list_players():
         print('List of players:')
         for row in players:
             # print(row)
-            print(f'{row[0]}. {row[1]} {row[2]}')
+            print(f'{row[0]}. {row[1]}')
     else:
         print('Currently there are no players listed.')
     conn.close()
@@ -52,6 +52,55 @@ def list_games():
     conn.close()
 
 
+def edit_player():
+    conn, c = connection()
+    list_players()
+    c.execute('Select id from players;')
+    existing_players = [i[0] for i in c.fetchall()]
+    while True:
+        try:
+            player_to_edit = int(input('Please enter the id of the player you would like to edit:  '))
+        except ValueError:
+            print('Please enter an integer number of players between 2 and 6.')
+            continue
+        finally:
+            if player_to_edit is None or player_to_edit not in existing_players:
+                print('Please enter a player from the database.')
+                continue
+            else:
+                break
+    while True:
+        first_name = input('Enter player new first name: ').strip()
+        last_name = input('Enter player new last name: ').strip()
+        if len(first_name.split()) > 1 or len(last_name.split()) > 1:
+            print('Please enter names one at a time.\n')
+            continue
+        elif not all([first_name, last_name, first_name.isalpha(), last_name.isalpha()]):
+            print('Please enter names as alphabetical characters only.\n')
+            continue
+        else:
+            break
+    c.execute('select name from players where id = ?', (player_to_edit,))
+    existing_player = c.fetchone()
+    name = ' '.join([first_name, last_name])
+    update_query = 'UPDATE players SET name = ? where id = ?'
+    print(f'Preparing to change {existing_player} to {name}.')
+    confirmation = input('Enter "Yes" to confirm the update.')
+    if confirmation.lower() == 'yes':
+        c.execute(update_query, (name, player_to_edit))
+        conn.commit()
+        conn.close()
+        print(f' Player id {player_to_edit} name changed to {name}.')
+        return None
+    else:
+        print('Operation aborted.')
+        return None
+
+
+def edit_game():
+    pass
+
+
 def add_new_player():
     conn, c = connection()
     while True:
@@ -68,7 +117,7 @@ def add_new_player():
     name = ' '.join([first_name, last_name])
     query = 'INSERT INTO players (name) VALUES (?)'
     try:
-        c.execute(query, name)
+        c.execute(query, [name])
         conn.commit()
         conn.close()
         print(f'New player {name} added successfully.')

@@ -7,27 +7,32 @@ from sys import exit
 # 3. need functino to display list of games, players COMPLETE
 # 3a. make some plots and statistics?
 # 3b. functions for updating player/game data?
+# 3c. add tests
 # 4. add a GUI?
 # 5. make a web app?
+
 def menu():
     print('''
-    1. List Players
-    2. List Games
+    1. List players
+    2. List games
     3. Add new player
     4. Add new game
-    5. Quit
+    5. Edit player
+    6. Edit game
+    7. Quit
+    
     Please make a selection.
     ''')
     while True:
         try:
             user_choice = int(input())
-            if user_choice in list(range(1,7)):
+            if user_choice in list(range(1,11)):
                 return user_choice
             else:
-                print('Enter a number between 1 and 5.')
+                print('Enter a number between 1 and 7.')
                 continue
         except ValueError:
-            print('Enter a number between 1 and 5.')
+            print('Enter a number between 1 and 7.')
             continue
 
 
@@ -38,10 +43,10 @@ def main():
     #2. Main menu loop
     while True:
         user_choice = menu()
-        if user_choice == 5:
+        if user_choice == 7:
             print('Bye!')
             exit()
-        elif user_choice == 6:
+        elif user_choice == 10:
             utilities.delete_games()
         elif user_choice == 1:
             utilities.list_players()
@@ -51,6 +56,10 @@ def main():
             utilities.add_new_player()
         elif user_choice == 4:
             utilities.add_new_game()
+        elif user_choice == 5:
+            utilities.edit_player()
+        elif user_choice == 6:
+            utilities.edit_game()
         else:
             pass
 
