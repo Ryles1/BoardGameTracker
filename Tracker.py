@@ -6,7 +6,7 @@ from plots import PieChart
 # 1. make a database with tables for players, games, and association table between the two COMPLETE
 # 2. need functions to add players, and add games with associated information COMPLETE
 # 3. need functino to display list of games, players COMPLETE
-# 3a. make some plots and statistics?
+# 3a. make some plots and statistics? COMPLETE PIE CHART
 # 3b. functions for updating player/game data? COMPLETE
 # 3c. add tests TESTS ADDED FOR SOME UTILITIES
 # 4. add a GUI?
