@@ -1,6 +1,8 @@
 import sqlite3
 from re import match
 
+#TODO: consider rewriting this all as a "manager" class
+#TODO: ADD A DELETE PLAYER FUNCTION
 
 def connection():
     conn = sqlite3.connect('BGT.s3db')

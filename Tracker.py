@@ -1,25 +1,28 @@
 import tables
 import utilities
 from sys import exit
+from plots import PieChart
 
 # 1. make a database with tables for players, games, and association table between the two COMPLETE
 # 2. need functions to add players, and add games with associated information COMPLETE
 # 3. need functino to display list of games, players COMPLETE
 # 3a. make some plots and statistics?
-# 3b. functions for updating player/game data?
-# 3c. add tests
+# 3b. functions for updating player/game data? COMPLETE
+# 3c. add tests TESTS ADDED FOR SOME UTILITIES
 # 4. add a GUI?
 # 5. make a web app?
 
 def menu():
     print('''
+    0. Quit
     1. List players
     2. List games
     3. Add new player
     4. Add new game
     5. Edit player
     6. Edit game
-    7. Quit
+    7. View win record
+
     
     Please make a selection.
     ''')
@@ -43,7 +46,7 @@ def main():
     #2. Main menu loop
     while True:
         user_choice = menu()
-        if user_choice == 7:
+        if user_choice == 0:
             print('Bye!')
             exit()
         elif user_choice == 10:
@@ -60,6 +63,9 @@ def main():
             utilities.edit_player()
         elif user_choice == 6:
             utilities.edit_game()
+        elif user_choice == 7:
+            pie = PieChart()
+            pie.make_pie()
         else:
             pass
 

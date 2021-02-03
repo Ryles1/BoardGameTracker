@@ -2,26 +2,25 @@ from matplotlib import pyplot as plt
 from utilities import connection
 
 
-#TODO: make a pie chart of winners
-# 1. need to count wins for each player (loop each player with a database query?)
-# 2. make chart with matplotlib
-
-class PieChart():
+class PieChart:
     def __init__(self):
         self.conn, self.c = connection()
         self.players = {}
+        self.get_wins()
 
     def get_wins(self):
-        c.execute('SELECT * FROM games;')
-        for row in c.fetchall():
+        self.c.execute('SELECT * FROM games;')
+        for row in self.c.fetchall():
             winner = row[9]
-            if self.players[winner]:
+            if self.players.get(winner):
                 self.players[winner] += 1
             else:
                 self.players[winner] = 1
 
     def make_pie(self):
-        pass
-
-if __name__ == '__main__':
-    chart = PieChart()
+        wins = self.players.values()
+        names = self.players.keys()
+        fig, ax = plt.subplots()
+        ax.pie(wins, labels=names, shadow=True)
+        ax.axis('equal')
+        plt.show()
