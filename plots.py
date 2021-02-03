@@ -2,7 +2,7 @@ from matplotlib import pyplot as plt
 from utilities import connection
 
 
-class PieChart:
+class GlobalPieChart:
     def __init__(self):
         self.conn, self.c = connection()
         self.players = {}
