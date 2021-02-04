@@ -1,8 +1,7 @@
 Board Game Tracker
 
 Sets up a simple sqlite3 database and provides basic CRUD operations.
-Future features may include performing some basic statistical analysis 
-and visualization.
+Performs some basic statistical analysis and visualization.
 
 Database: sqlite3
 -Practiced creating basic SQL queries
@@ -16,3 +15,9 @@ General:
 Testing:
 - arranging directory to allow for testing
 - using unittest module to write tests for some functions
+
+Visualization:
+
+- global statistics on wins are collected and presented in a pie chart
+using matplotlib
+- individual statistics on wins are collected and presented

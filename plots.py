@@ -51,5 +51,10 @@ class IndividualChart:
             self.games[game]['played'] = game_played
 
     def make_chart(self):
-        pass
+        played = [i['played'] for i in self.games.values()]
+        plt.figure()
+        plt.subplot()
+        # bar chart of games with number of games played
+        plt.bar(self.games.keys(), played)
+        plt.show()
 
