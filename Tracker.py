@@ -1,7 +1,7 @@
 import tables
 import utilities
 from sys import exit
-from plots import GlobalPieChart
+from plots import GlobalPieChart, IndividualChart
 
 # 1. make a database with tables for players, games, and association table between the two COMPLETE
 # 2. need functions to add players, and add games with associated information COMPLETE
@@ -30,13 +30,13 @@ def menu():
     while True:
         try:
             user_choice = int(input())
-            if user_choice in list(range(1,11)):
+            if user_choice in list(range(0,9)):
                 return user_choice
             else:
-                print('Enter a number between 1 and 7.')
+                print('Enter a number between 0 and 8.')
                 continue
         except ValueError:
-            print('Enter a number between 1 and 7.')
+            print('Enter a number between 0 and 8.')
             continue
 
 
@@ -67,6 +67,11 @@ def main():
         elif user_choice == 7:
             pie = GlobalPieChart()
             pie.make_pie()
+        elif user_choice == 8:
+            player = input('Enter name of desired player: ')
+            pie = IndividualChart(player)
+            pie.get_games()
+            print(pie.games)
         else:
             pass
 

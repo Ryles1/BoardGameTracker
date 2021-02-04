@@ -3,6 +3,7 @@ from re import match
 
 #TODO: consider rewriting this all as a "manager" class
 #TODO: ADD A DELETE PLAYER FUNCTION
+#TODO: add a validate_name function
 
 def connection():
     conn = sqlite3.connect('BGT.s3db')
