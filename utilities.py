@@ -292,12 +292,11 @@ def add_new_game():
         except ValueError:
             print('Please enter an integer number of players between 2 and 6.')
             continue
-        finally:
-            if not 2 <= num_players <= 6:
-                print('Please enter an integer number of players between 2 and 6.')
-                continue
-            else:
-                break
+        if not 2 <= num_players <= 6:
+            print('Please enter an integer number of players between 2 and 6.')
+            continue
+        else:
+            break
     player_ids = []
     # print list of players, get player ids, validate they are in database already
     list_players()
