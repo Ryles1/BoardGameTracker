@@ -360,9 +360,9 @@ def add_new_game():
     print('Game successfully added!')
 
 
-
 def delete_games():
     conn, c = connection()
+    list_games()
     delete_id = int(input('Enter game id to delete '))
     query = 'DELETE FROM games WHERE id = ?'
     confirmation = input('Enter "Yes" to delete game.')
@@ -375,4 +375,28 @@ def delete_games():
         conn.close()
     except sqlite3.OperationalError:
         with sqlite3.OperationalError as e:
+            print(e)
+    except sqlite3.ProgrammingError:
+        with sqlite3.ProgrammingError as e:
+            print(e)
+
+
+def delete_player():
+    conn, c = connection()
+    list_players()
+    delete_id = int(input('Enter player id to delete: '))
+    query = 'DELETE FROM players WHERE id = ?'
+    confirmation = input('Enter "Yes" to delete player.')
+    if confirmation != 'Yes':
+        print('Delete operation aborted')
+        return None
+    try:
+        c.execute(query, (delete_id,))
+        conn.commit()
+        conn.close()
+    except sqlite3.OperationalError:
+        with sqlite3.OperationalError as e:
+            print(e)
+    except sqlite3.ProgrammingError:
+        with sqlite3.ProgrammingError as e:
             print(e)

@@ -24,19 +24,21 @@ def menu():
     6. Edit game
     7. View global win record
     8. View individual win record
+    9. Delete player
+    10. Delete game
     
     Please make a selection.
     ''')
     while True:
         try:
             user_choice = int(input())
-            if user_choice in list(range(0,9)):
+            if user_choice in list(range(0,11)):
                 return user_choice
             else:
-                print('Enter a number between 0 and 8.')
+                print('Enter a number between 0 and 10.')
                 continue
         except ValueError:
-            print('Enter a number between 0 and 8.')
+            print('Enter a number between 0 and 10.')
             continue
 
 
@@ -50,6 +52,8 @@ def main():
         if user_choice == 0:
             print('Bye!')
             exit()
+        elif user_choice == 9:
+            utilities.delete_player()
         elif user_choice == 10:
             utilities.delete_games()
         elif user_choice == 1:
