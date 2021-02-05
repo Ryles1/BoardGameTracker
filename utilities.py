@@ -285,7 +285,6 @@ def add_new_game():
         else:
             print('There was an error with the date, please try again (format YYYY-MM-DD):')
             continue
-
     while True:
         try:
             num_players = int(input('Enter the number of players (2 - 6): '))
@@ -309,7 +308,7 @@ def add_new_game():
         try:
             p = int(input())
             if p == 100:
-                break
+                return None
         except ValueError:
             print('Please enter only an integer for the id.\n')
             continue
