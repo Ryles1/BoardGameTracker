@@ -52,9 +52,14 @@ class IndividualChart:
 
     def make_chart(self):
         played = [i['played'] for i in self.games.values()]
-        plt.figure()
-        plt.subplot()
-        # bar chart of games with number of games played
-        plt.bar(self.games.keys(), played)
+        won = [j['wins'] for j in self.games.values()]
+        # stacked bar chart of games with number of games played and won
+        fig, ax = plt.subplots()
+        width = 0.3
+        ax.bar(self.games.keys(), played, width, label='Games Played')
+        ax.bar(self.games.keys(), won, width, bottom=played ,label='Games Won')
+        ax.set_ylabel('Games')
+        ax.set_title('Games Played and Won')
+        ax.legend()
         plt.show()
 
