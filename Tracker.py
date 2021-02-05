@@ -13,6 +13,7 @@ from plots import GlobalPieChart, IndividualChart
 # 4a. make an executable?
 # 5. make a web app?
 
+
 def menu():
     print('''
     0. Quit
@@ -25,14 +26,13 @@ def menu():
     7. View global win record
     8. View individual win record
     9. Delete player
-    10. Delete game
-    
+    10. Delete game 
     Please make a selection.
     ''')
     while True:
         try:
             user_choice = int(input())
-            if user_choice in list(range(0,11)):
+            if user_choice in list(range(0, 11)):
                 return user_choice
             else:
                 print('Enter a number between 0 and 10.')
@@ -43,10 +43,10 @@ def menu():
 
 
 def main():
-    #1. check if database and tables exist
+    # 1. check if database and tables exist
     tables.create_games()
     tables.create_players()
-    #2. Main menu loop
+    # 2. Main menu loop
     while True:
         user_choice = menu()
         if user_choice == 0:
