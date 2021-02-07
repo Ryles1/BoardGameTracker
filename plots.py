@@ -16,7 +16,7 @@ class GlobalPieChart:
                 self.players[winner] += 1
             else:
                 self.players[winner] = 1
-
+    # TODO: add a legend and game names to make_pie
     def make_pie(self):
         wins = self.players.values()
         names = self.players.keys()
@@ -45,11 +45,12 @@ class IndividualChart:
             game_wins = cursor.fetchone()[0]
             self.games[game]['wins'] = game_wins
         for game in self.games.keys():
-            cursor.execute('SELECT count(*) FROM games WHERE player1 = ? or player2 = ? or player3 = ? or player4 = ?'
-                           'or player5 = ? or player6 = ?', [id]*6)
-            game_played = cursor.fetchone()[0]
-            self.games[game]['played'] = game_played
-
+            cursor.execute('SELECT count(*) FROM games WHERE game_played = ? and '
+                           '(player1 = ? or player2 = ? or player3 = ? or player4 = ?'
+                           'or player5 = ? or player6 = ?)', [game]+[id]*6)
+            games_played = cursor.fetchone()[0]
+            self.games[game]['played'] = games_played
+    #todo: fix game counts and layout issues
     def make_chart(self):
         played = [i['played'] for i in self.games.values()]
         won = [j['wins'] for j in self.games.values()]
