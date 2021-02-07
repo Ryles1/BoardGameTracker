@@ -10,19 +10,24 @@ class GlobalPieChart:
     def get_wins(self):
         conn, cursor = connection()
         cursor.execute('SELECT * FROM games;')
-        for row in cursor.fetchall():
-            winner = row[9]
+        rows = cursor.fetchall()
+        cursor.execute('SELECT * FROM players')
+        name_dict = {row[0]:row[1] for row in cursor.fetchall()}
+        for row in rows:
+            winner_id = row[9]
+            winner = name_dict.get(winner_id, 'Not Found')
             if self.players.get(winner):
                 self.players[winner] += 1
             else:
                 self.players[winner] = 1
-    # TODO: add a legend and game names to make_pie
+    # TODO: add game counts to make_pie and fix layout (legend covers some of chart)
     def make_pie(self):
         wins = self.players.values()
         names = self.players.keys()
         fig, ax = plt.subplots()
         ax.pie(wins, labels=names, shadow=True)
         ax.axis('equal')
+        plt.legend()
         plt.show()
 
 
@@ -50,7 +55,7 @@ class IndividualChart:
                            'or player5 = ? or player6 = ?)', [game]+[id]*6)
             games_played = cursor.fetchone()[0]
             self.games[game]['played'] = games_played
-    #todo: fix game counts and layout issues
+    #todo: layout issues
     def make_chart(self):
         played = [i['played'] for i in self.games.values()]
         won = [j['wins'] for j in self.games.values()]
@@ -60,7 +65,7 @@ class IndividualChart:
         ax.bar(self.games.keys(), played, width, label='Games Played')
         ax.bar(self.games.keys(), won, width, bottom=played ,label='Games Won')
         ax.set_ylabel('Games')
-        ax.set_title('Games Played and Won')
+        ax.set_title(f'Games Played and Won ({self.player})')
         ax.legend()
         plt.show()
 
