@@ -20,14 +20,18 @@ class GlobalPieChart:
                 self.players[winner] += 1
             else:
                 self.players[winner] = 1
-    # TODO: add game counts to make_pie and fix layout (legend covers some of chart)
+    # TODO: fix layout (legend covers some of chart)
     def make_pie(self):
+        # make a pie chart of each players wins
         wins = self.players.values()
         names = self.players.keys()
         fig, ax = plt.subplots()
-        ax.pie(wins, labels=names, shadow=True)
+        # autopct is calculated in order to show the integer number of wins instead of the percentage
+        wedges, texts, autotexts = ax.pie(wins, autopct=lambda x: f'{x/100*sum(wins):.0f}', labels=names,
+                                          textprops=dict(color='w'))
         ax.axis('equal')
-        plt.legend()
+        ax.set_title('Board Game Wins by Player')
+        plt.legend(wedges, names, loc='center left', bbox_to_anchor=(1, 0.5))
         plt.show()
 
 
@@ -55,7 +59,7 @@ class IndividualChart:
                            'or player5 = ? or player6 = ?)', [game]+[id]*6)
             games_played = cursor.fetchone()[0]
             self.games[game]['played'] = games_played
-    #todo: layout issues
+    #todo: layout issues, change to grouped bar chart
     def make_chart(self):
         played = [i['played'] for i in self.games.values()]
         won = [j['wins'] for j in self.games.values()]
