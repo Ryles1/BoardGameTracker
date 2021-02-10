@@ -20,7 +20,7 @@ class GlobalPieChart:
                 self.players[winner] += 1
             else:
                 self.players[winner] = 1
-    # TODO: fix layout (legend covers some of chart)
+
     def make_pie(self):
         # make a pie chart of each players wins
         wins = self.players.values()
@@ -28,10 +28,10 @@ class GlobalPieChart:
         fig, ax = plt.subplots()
         # autopct is calculated in order to show the integer number of wins instead of the percentage
         wedges, texts, autotexts = ax.pie(wins, autopct=lambda x: f'{x/100*sum(wins):.0f}', labels=names,
-                                          textprops=dict(color='w'))
+                                          textprops=dict(color='w'), radius=0.8)
         ax.axis('equal')
         ax.set_title('Board Game Wins by Player')
-        plt.legend(wedges, names, loc='center left', bbox_to_anchor=(1, 0.5))
+        plt.legend(wedges, names, loc='upper right', bbox_to_anchor=(1.1, 1))
         plt.show()
 
 
