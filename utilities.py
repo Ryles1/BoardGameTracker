@@ -217,6 +217,7 @@ def edit_game():
             f'player6 = ?' \
             f'winner = ? ' \
             f'WHERE id = ?'
+    # if less than 6 players participated, put null in remaining places
     nulls = ['NULL' for _ in range(6 - len(player_ids))]
     player_ids = player_ids + nulls
     values = (date_played,
@@ -235,6 +236,7 @@ def edit_game():
 def add_new_player():
     conn, c = connection()
     while True:
+        # take in names and check they are alpha characters
         first_name = input('Enter player first name: ').strip()
         last_name = input('Enter player last name: ').strip()
         if len(first_name.split()) > 1 or len(last_name.split()) > 1:
@@ -252,12 +254,14 @@ def add_new_player():
         conn.commit()
         conn.close()
         print(f'New player {name} added successfully.')
+    # try and avoid program abortion because of database errors
     except sqlite3.OperationalError:
         with sqlite3.OperationalError as e:
             print(e)
 
 
 def validate_date(date):
+    # date is to match format YYYY-MM-DD
     r = match(r'\d{4}-(0[1-9]|[1][12])-([0-2][0-9]|[3][0-1])', date)
     if r:
         return True
@@ -266,10 +270,11 @@ def validate_date(date):
 
 
 def validate_game(game):
+    # game names must be alphanumeric characters and less than 50 characters long (arbitrary number)
     test_name = ''.join(game.split())
     if not test_name.isalnum():
         return False
-    elif not len(game) < 100:
+    elif not len(game) < 50:
         return False
     else:
         return True
@@ -313,10 +318,10 @@ def add_new_game():
     # while loop for getting names of players
     while len(player_ids) != num_players:
         print('Please enter the id of the player.  If they are not listed, '
-              'please enter them into the database first (enter 100 to quit back to menu).')
+              'please enter them into the database first (enter 9999 to quit back to menu).')
         try:
             p = int(input())
-            if p == 100:
+            if p == 9999:
                 return None
         except ValueError:
             print('Please enter only an integer for the id.\n')
@@ -326,17 +331,17 @@ def add_new_game():
         elif p in player_ids:
             print('You have already entered that player.  Try again.\n')
         else:
-            player_ids.append(p)
+            player_ids.append(str(p))
     # get the winner from user
     list_players()
     while True:
         try:
             winner = int(input('Please enter the id of the winner.  If they are not listed, '
-                               'please enter them into the database first (enter 100 to quit back to menu)'))
+                               'please enter them into the database first (enter 9999 to quit back to menu)'))
         except ValueError:
             print('Please enter only an integer for the id.\n')
             continue
-        if winner == 100:
+        if winner == 9999:
             conn.close()
             return None
         elif winner not in existing_players:
@@ -349,6 +354,7 @@ def add_new_game():
             break
     query = f'INSERT INTO games (date_played, game_played, player1, player2, player3, player4, player5, player6, ' \
             f'winner) VALUES (?,?,?,?,?,?,?,?,?)'
+    # if less than 6 players participated, put null in remaining places
     nulls = ['NULL' for _ in range(6 - len(player_ids))]
     player_ids = player_ids + nulls
     values = (date_played,
