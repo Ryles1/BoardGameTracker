@@ -13,7 +13,7 @@ from plots import GlobalPieChart, IndividualChart
 # 4a. make an executable?
 # 5. make a web app?
 
-
+#todo: add a menu dict to avoid having to add menu items and change range function below
 def menu():
     print('''
     0. Quit

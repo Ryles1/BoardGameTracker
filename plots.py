@@ -61,7 +61,8 @@ class IndividualChart:
                            'or player5 = ? or player6 = ?)', [game]+[id]*6)
             games_played = cursor.fetchone()[0]
             self.games[game]['played'] = games_played
-
+    # TODO: add text indicating total games played/won
+    # TODO: add labels to the top of each bar
     def make_chart(self):
         played = [i['played'] for i in self.games.values()]
         won = [j['wins'] for j in self.games.values()]

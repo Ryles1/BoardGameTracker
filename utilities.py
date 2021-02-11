@@ -1,25 +1,28 @@
 import sqlite3
 from re import match
 
-#TODO: consider rewriting this all as a "manager" class
-#TODO: ADD A DELETE PLAYER FUNCTION
-#TODO: add a validate_name function
+
+# TODO: consider rewriting this all as a "manager" class
+
+# TODO: add a validate_name function
 
 def connection():
+    # returns connection and cursor for use with the database
     conn = sqlite3.connect('BGT.s3db')
     c = conn.cursor()
     return conn, c
 
 
 def list_players():
+    # query database for player info and display it to stdout
     query = 'SELECT * FROM players'
     conn, c = connection()
     c.execute(query)
+    # returns list of tuples of player information - each tuple is one row from the db (one player)
     players = c.fetchall()
     if players:
         print('List of players:')
         for row in players:
-            # print(row)
             print(f'{row[0]}. {row[1]}')
     else:
         print('Currently there are no players listed.')
@@ -27,9 +30,11 @@ def list_players():
 
 
 def list_games():
+    # query database for game info and display it to stdout
     query = 'SELECT * FROM games'
     conn, c = connection()
     c.execute(query)
+    # returns list of tuples of game information - each tuple is one row from the db (one game)
     games = c.fetchall()
     # TODO: improve readability of game listing
     name_query = 'SELECT * from players'
@@ -38,19 +43,24 @@ def list_games():
     names_dict = {player_row[0]: (' '.join(player_row[1:3])) for player_row in c.fetchall()}
     if games:
         print('List of games:')
-        print('''ID     Date of Game    Game Played    Player     Player      Player      Player      Player      Player      Winner''')
+        print('''ID     Date of Game    Game Played    Player     Player      Player      Player      Player      Player
+              Winner''')
+        # use names_dict to get actual player name for display
         for row in games:
+            date = row[1]
+            game = row[2]
+            id_ = str(row[0])
             game_data = [
-            str(row[0]),
-            row[1],
-            row[2],
-            names_dict.get(row[3],' - '),
-            names_dict.get(row[4],' - '),
-            names_dict.get(row[5],' - '),
-            names_dict.get(row[6],' - '),
-            names_dict.get(row[7],' - '),
-            names_dict.get(row[8],' - '),
-            names_dict.get(row[9],' - ')]
+                id_,
+                date,
+                game,
+                names_dict.get(row[3], ' - '),
+                names_dict.get(row[4], ' - '),
+                names_dict.get(row[5], ' - '),
+                names_dict.get(row[6], ' - '),
+                names_dict.get(row[7], ' - '),
+                names_dict.get(row[8], ' - '),
+                names_dict.get(row[9], ' - ')]
             print('\t\t'.join(game_data))
     else:
         print('Currently there are no games listed.')
@@ -61,6 +71,7 @@ def edit_player():
     conn, c = connection()
     list_players()
     c.execute('Select id from players;')
+    # list of all player ids as strings
     existing_players = [i[0] for i in c.fetchall()]
     while True:
         try:
@@ -68,12 +79,11 @@ def edit_player():
         except ValueError:
             print('Please enter the player id as an integer.')
             continue
-        finally:
-            if player_to_edit is None or player_to_edit not in existing_players:
-                print('Please enter a player from the database.')
-                continue
-            else:
-                break
+        if player_to_edit in existing_players:
+            break
+        else:
+            print('Please enter a player from the database.')
+            continue
     while True:
         first_name = input('Enter player new first name: ').strip()
         last_name = input('Enter player new last name: ').strip()
@@ -172,7 +182,7 @@ def edit_game():
         elif p in player_ids:
             print('You have already entered that player.  Try again.\n')
         else:
-            player_ids.append(p)
+            player_ids.append(str(p))
     # get the winner from user
     list_players()
     while True:
@@ -198,11 +208,11 @@ def edit_game():
             f'game_played = ? ' \
             f'player_ids[0] = ?, ' \
             f'player_ids[1] = ?' \
-            f'player_ids[2] = ?'\
+            f'player_ids[2] = ?' \
             f'player_ids[3] = ?' \
             f'player_ids[4] = ?' \
             f'player_ids[5] = ?' \
-            f'winner = ? '\
+            f'winner = ? ' \
             f'WHERE id = ?'
     nulls = ['NULL' for _ in range(6 - len(player_ids))]
     player_ids = player_ids + nulls
@@ -216,10 +226,6 @@ def edit_game():
               player_ids[5],
               winner,
               )
-    #c.execute(query, values)
-    #conn.commit()
-    #conn.close()
-    print(query, values, sep='\n')
     print('Game successfully updated!')
 
 
