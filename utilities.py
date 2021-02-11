@@ -85,6 +85,7 @@ def edit_player():
             print('Please enter a player from the database.')
             continue
     while True:
+        # names are taken in and checked to be only alpha characters
         first_name = input('Enter player new first name: ').strip()
         last_name = input('Enter player new last name: ').strip()
         if len(first_name.split()) > 1 or len(last_name.split()) > 1:
@@ -96,6 +97,7 @@ def edit_player():
         else:
             break
     c.execute('select name from players where id = ?', (player_to_edit,))
+    # returns one row from the db as a tuple
     existing_player = c.fetchone()
     name = ' '.join([first_name, last_name])
     update_query = 'UPDATE players SET name = ? where id = ?'
@@ -116,10 +118,11 @@ def edit_game():
     conn, c = connection()
     list_games()
     c.execute('Select id from games;')
+    # returns list of game ids  as strings
     existing_games = [i[0] for i in c.fetchall()]
     while True:
         try:
-            game_to_edit = int(input('Please enter the id of the game you would like to edit (100 to abort):  '))
+            game_to_edit = int(input('Please enter the id of the game you would like to edit (9999 to abort):  '))
         except ValueError:
             print('Please enter the game id as an integer.')
             continue
@@ -127,7 +130,7 @@ def edit_game():
             if game_to_edit is None or game_to_edit not in existing_games:
                 print('Please enter a game from the database.')
                 continue
-            elif game_to_edit == 100:
+            elif game_to_edit == 9999:
                 conn.close()
                 return None
             else:
@@ -169,10 +172,10 @@ def edit_game():
     # while loop for getting names of players
     while len(player_ids) != num_players:
         print('Please enter the id of the player.  If they are not listed, '
-              'please enter them into the database first (enter 100 to quit back to menu).')
+              'please enter them into the database first (enter 9999 to quit back to menu).')
         try:
             p = int(input())
-            if p == 100:
+            if p == 9999:
                 break
         except ValueError:
             print('Please enter only an integer for the id.\n')
@@ -188,11 +191,11 @@ def edit_game():
     while True:
         try:
             winner = int(input('Please enter the id of the winner.  If they are not listed, '
-                               'please enter them into the database first (enter 100 to quit back to menu)'))
+                               'please enter them into the database first (enter 9999 to quit back to menu)'))
         except ValueError:
             print('Please enter only an integer for the id.\n')
             continue
-        if winner == 100:
+        if winner == 9999:
             conn.close()
             return None
         elif winner not in existing_players:
@@ -206,12 +209,12 @@ def edit_game():
     query = f'UPDATE games set ' \
             f'date_played = ? ' \
             f'game_played = ? ' \
-            f'player_ids[0] = ?, ' \
-            f'player_ids[1] = ?' \
-            f'player_ids[2] = ?' \
-            f'player_ids[3] = ?' \
-            f'player_ids[4] = ?' \
-            f'player_ids[5] = ?' \
+            f'player1 = ?, ' \
+            f'player2 = ?' \
+            f'player3 = ?' \
+            f'player4 = ?' \
+            f'player5 = ?' \
+            f'player6 = ?' \
             f'winner = ? ' \
             f'WHERE id = ?'
     nulls = ['NULL' for _ in range(6 - len(player_ids))]
