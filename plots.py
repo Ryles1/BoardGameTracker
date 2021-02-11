@@ -33,6 +33,7 @@ class GlobalPieChart:
         ax.set_title('Board Game Wins by Player')
         plt.legend(wedges, names, loc='upper right', bbox_to_anchor=(1.1, 1))
         fig.tight_layout()
+        plt.style.use('ggplot')
         plt.show()
 
 
@@ -60,7 +61,7 @@ class IndividualChart:
                            'or player5 = ? or player6 = ?)', [game]+[id]*6)
             games_played = cursor.fetchone()[0]
             self.games[game]['played'] = games_played
-    #todo: layout issues, change to grouped bar chart
+
     def make_chart(self):
         played = [i['played'] for i in self.games.values()]
         won = [j['wins'] for j in self.games.values()]
@@ -71,6 +72,7 @@ class IndividualChart:
         rect2 = ax.bar(self.games.keys(), played, (width * -1), align='edge', label='Games Won')
         ax.set_ylabel('Games')
         ax.set_title(f'Games Played and Won ({self.player})')
+        plt.setp(ax.get_xticklabels(), rotation=30, horizontalalignment='right')
         ax.legend()
         fig.tight_layout()
         plt.show()

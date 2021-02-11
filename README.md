@@ -23,3 +23,5 @@ Performs some basic statistical analysis and visualization.
 using matplotlib
 - individual statistics on wins are collected and presented as a 
 stacked bar chart using matplotlib
+  - learned about how matplotlib modules work - figures, axes, etc.
+    and customizing the charts
