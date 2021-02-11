@@ -32,6 +32,7 @@ class GlobalPieChart:
         ax.axis('equal')
         ax.set_title('Board Game Wins by Player')
         plt.legend(wedges, names, loc='upper right', bbox_to_anchor=(1.1, 1))
+        fig.tight_layout()
         plt.show()
 
 
@@ -66,10 +67,12 @@ class IndividualChart:
         # stacked bar chart of games with number of games played and won
         fig, ax = plt.subplots()
         width = 0.3
-        ax.bar(self.games.keys(), played, width, label='Games Played')
-        ax.bar(self.games.keys(), won, width, bottom=played ,label='Games Won')
+        rect1 = ax.bar(self.games.keys(), won, width, align='edge', label='Games Played')
+        rect2 = ax.bar(self.games.keys(), played, (width * -1), align='edge', label='Games Won')
         ax.set_ylabel('Games')
         ax.set_title(f'Games Played and Won ({self.player})')
         ax.legend()
+        fig.tight_layout()
         plt.show()
+
 

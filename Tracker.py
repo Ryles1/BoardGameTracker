@@ -75,7 +75,6 @@ def main():
             player = input('Enter name of desired player: ')
             pie = IndividualChart(player)
             pie.get_games()
-            print(pie.games)
             pie.make_chart()
         else:
             pass
