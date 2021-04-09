@@ -69,8 +69,8 @@ class IndividualChart:
         # stacked bar chart of games with number of games played and won
         fig, ax = plt.subplots()
         width = 0.3
-        rect1 = ax.bar(self.games.keys(), won, width, align='edge', label='Games Played')
-        rect2 = ax.bar(self.games.keys(), played, (width * -1), align='edge', label='Games Won')
+        rect1 = ax.bar(self.games.keys(), won, width, align='edge', label='Games Won')
+        rect2 = ax.bar(self.games.keys(), played, (width * -1), align='edge', label='Games Played')
         ax.set_ylabel('Games')
         ax.set_title(f'Games Played and Won ({self.player})')
         plt.setp(ax.get_xticklabels(), rotation=30, horizontalalignment='right')
