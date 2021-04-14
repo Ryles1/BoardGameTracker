@@ -337,7 +337,7 @@ def add_new_game():
     while True:
         try:
             winner = int(input('Please enter the id of the winner.  If they are not listed, '
-                               'please enter them into the database first (enter 9999 to quit back to menu)'))
+                               'please enter them into the database first (enter 9999 to quit back to menu):\n'))
         except ValueError:
             print('Please enter only an integer for the id.\n')
             continue
@@ -347,7 +347,7 @@ def add_new_game():
         elif winner not in existing_players:
             print('Please enter the player in the database before adding this game.\n')
             continue
-        elif winner not in player_ids:
+        elif str(winner) not in player_ids:
             print('The winner must have played the game! Try again.\n')
             continue
         else:
